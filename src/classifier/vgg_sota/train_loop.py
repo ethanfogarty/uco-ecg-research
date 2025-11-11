@@ -9,7 +9,7 @@ from vgg_model import VGG
 import pyreadr
 
 
-data = pyreadr.read_r("/media/ethan/Data/Documents/UCO/Research/Data Sets/Brno/Brno_classifier_sets.RData")
+data = pyreadr.read_r("/path/to/dataset.RData")
 # ------------------------------------------------------------------
 #             Train Data  ------------------------------------------
 # ------------------------------------------------------------------
@@ -29,7 +29,7 @@ test_data = test_data.to_numpy()[..., np.newaxis]
 test_labels = data['class.annot.test']
 test_labels = test_labels.to_numpy()
 # ------------------------------------------------------------------
-del data
+del data    # Clean up data variable to make space in the environment
 
 vgg = VGG()
 vgg.compile(optimizer=keras.optimizers.Adam(0.001),
@@ -73,8 +73,8 @@ print("\nConfusion Matrix:\n", cm_df)
 #    Save confusion matrix, params, and training graphs to CSV  ----
 # ------------------------------------------------------------------
 pd.DataFrame(cm_df).to_csv(
-    f"/media/ethan/Data/Documents/UCO/Research/Grid Search Results/Brno_VGG_SOTA/conf_matrix.csv", index=False)
+    f"src/results/classifier/vgg_conf_matrix.csv", index=False)
 pd.DataFrame(history.history).to_csv(
-    f"/media/ethan/Data/Documents/UCO/Research/Grid Search Results/Brno_VGG_SOTA/traingraph.csv", index=False)
+    f"src/results/classifier/vgg_traingraph.csv", index=False)
 
 
