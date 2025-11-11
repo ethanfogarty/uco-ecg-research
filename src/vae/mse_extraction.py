@@ -9,7 +9,7 @@ import pandas
 from Scripts.brno_cnnvae_106.m106 import VAE, Sampler
 
 
-data = pyreadr.read_r("/media/ethan/Data/Documents/UCO/Research/Data Sets/Brno/Brno_classifier_sets.RData")
+data = pyreadr.read_r("/path/to/dataset.RData")
 # ------------------------------------------------------------------
 #             DS2 Train Data  --------------------------------------
 # ------------------------------------------------------------------
@@ -39,7 +39,7 @@ test_labels = data['class.annot.test'].to_numpy()
 # ------------------------------------------------------------------
 #           Load Saved Model Weights  ------------------------------
 # ------------------------------------------------------------------
-new_vae = keras.models.load_model("/media/ethan/Data/Documents/UCO/Research/CNNVAE_Weights/brno_cnnvae_106/106.keras", compile=False)
+new_vae = keras.models.load_model("src/vae/weights/brno_cnnvae_106/106.keras", compile=False)
 
 
 # ------------------------------------------------------------------
@@ -48,7 +48,7 @@ new_vae = keras.models.load_model("/media/ethan/Data/Documents/UCO/Research/CNNV
 reconstruction = new_vae.predict(train_data, batch_size=128, verbose=1)
 train_ds2_mse = tf.reduce_mean(np.square(reconstruction - train_data), axis=[1, 2])
 # Convert to float64 since R uses 64 bit double
-pandas.DataFrame(train_ds2_mse.numpy()).to_csv("/media/ethan/Data/Documents/UCO/Research/Data Sets/brno_ds2_train_mse.csv", index = False)
+pandas.DataFrame(train_ds2_mse.numpy()).to_csv("datasets/brno_ds2_train_mse.csv", index = False)
 
 
 # ------------------------------------------------------------------
@@ -57,4 +57,4 @@ pandas.DataFrame(train_ds2_mse.numpy()).to_csv("/media/ethan/Data/Documents/UCO/
 reconstruction = new_vae.predict(test_data, batch_size=128, verbose=1)
 test_ds2_mse = tf.reduce_mean(np.square(reconstruction - test_data), axis=[1, 2])
 # Convert to float64 since R uses 64 bit double
-pandas.DataFrame(test_ds2_mse.numpy()).to_csv("/media/ethan/Data/Documents/UCO/Research/Data Sets/brno_ds2_test_mse.csv", index = False)
+pandas.DataFrame(test_ds2_mse.numpy()).to_csv("datasets/brno_ds2_test_mse.csv", index = False)

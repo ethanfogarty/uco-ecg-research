@@ -8,7 +8,7 @@ for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
 from m106 import VAE, encoder, decoder, Sampler
 
-data = pyreadr.read_r("/media/ethan/Data/Documents/UCO/Research/Data Sets/Brno/brno_vae_sets_ones_only.RData")
+data = pyreadr.read_r("/path/to/dataset.RData")
 
 # ------------------------------------------------------------------
 #             Train Data  ------------------------------------------
@@ -66,7 +66,7 @@ mse = tf.reduce_mean((test_predictions - test_data) ** 2)
 # Use .numpy() to convert a tf tensor to a numpy array
 print("MSE = ", mse.numpy())
 
-keras.models.save_model(vae, "/media/ethan/Data/Documents/UCO/Research/CNNVAE_Weights/brno_cnnvae_106/106.keras")
+keras.models.save_model(vae, "src/vae/weights/brno_cnnvae_106/106.keras")
 
 
 # ------------------------------------------------------------------
@@ -80,4 +80,4 @@ plt.ylabel("Amplitude")
 plt.title("Reconstructed vs Original Window")
 plt.legend()
 plt.tight_layout()
-plt.savefig(f"/media/ethan/Data/Documents/UCO/Research/106_plot.png")
+plt.savefig(f"src/results/vae/106_plot.png")

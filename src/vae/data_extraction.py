@@ -9,7 +9,7 @@ import pandas
 from Scripts.brno_cnnvae_106.m106 import VAE, Sampler
 
 # Max value from VAE train set 12955.911823647295
-data = pyreadr.read_r("/media/ethan/Data/Documents/UCO/Research/Data Sets/Brno/new_brno_sets.RData")
+data = pyreadr.read_r("/path/to/dataset.RData")
 # ------------------------------------------------------------------
 #             DS2 Train Data  --------------------------------------
 # ------------------------------------------------------------------
@@ -42,7 +42,7 @@ test_labels = test_labels.to_numpy()
 # ------------------------------------------------------------------
 #           Load Saved Model Weights  ------------------------------
 # ------------------------------------------------------------------
-new_vae = keras.models.load_model("/media/ethan/Data/Documents/UCO/Research/CNNVAE_Weights/brno_cnnvae_106/106.keras", compile=False)
+new_vae = keras.models.load_model("src/vae/weights/brno_cnnvae_106/106.keras", compile=False)
 
 # ------------------------------------------------------------------
 #           Extract Encoded DS2 Data  ------------------------------
@@ -50,10 +50,10 @@ new_vae = keras.models.load_model("/media/ethan/Data/Documents/UCO/Research/CNNV
 new_z_mean, new_z_logv = new_vae.encoder.predict(train_data, batch_size=128, verbose=1)
 ds2_x_train = tf.concat([new_z_mean, new_z_logv], axis=1)
 # Convert to float64 since R uses 64 bit double
-pandas.DataFrame(ds2_x_train, dtype=np.float64).to_csv("/media/ethan/Data/Documents/UCO/Research/Data Sets/brno_ds2_x_train_encoded.csv", index = False)
+pandas.DataFrame(ds2_x_train, dtype=np.float64).to_csv("datasets/brno_ds2_x_train_encoded.csv", index = False)
 
 new_z_mean, new_z_logv = new_vae.encoder.predict(test_data, batch_size=128, verbose=1)
 ds2_x_test = tf.concat([new_z_mean, new_z_logv], axis=1)
 # Convert to float64 since R uses 64 bit double
-pandas.DataFrame(ds2_x_test, dtype=np.float64).to_csv("/media/ethan/Data/Documents/UCO/Research/Data Sets/brno_ds2_x_test_encoded.csv", index = False)
+pandas.DataFrame(ds2_x_test, dtype=np.float64).to_csv("datasets/brno_ds2_x_test_encoded.csv", index = False)
 
