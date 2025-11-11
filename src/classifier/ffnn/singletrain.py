@@ -9,20 +9,19 @@ import pyreadr
 import numpy as np
 
 
-data = pyreadr.read_r("/media/ethan/Data/Documents/UCO/Research/Data Sets/Brno/Brno_classifier_sets.RData")
+data = pyreadr.read_r("/path/to/dataset.RData")
 # ------------------------------------------------------------------
 #             Train Data  ------------------------------------------
 # ------------------------------------------------------------------
-train_data = pd.read_csv("/media/ethan/Data/Documents/UCO/Research/Data Sets/brno_ds2_x_train_encoded.csv")
+train_data = pd.read_csv("/path/to/dataset.csv")
 train_labels = data['class.annot.train']
 train_labels.columns = ['label'] # Rename the column from '0' to 'label'
 train_one_hot_labels = np.eye(3)[train_labels.astype(int) - 1]     # subtract 1 to shift labels to 0-based index
 train_one_hot_labels = np.squeeze(train_one_hot_labels, axis=1)
-#print(np.shape(train_one_hot_labels))
 # ------------------------------------------------------------------
 #             Test Data  -------------------------------------------
 # ------------------------------------------------------------------
-test_data = pd.read_csv("/media/ethan/Data/Documents/UCO/Research/Data Sets/brno_ds2_x_test_encoded.csv")
+test_data = pd.read_csv("/path/to/dataset.csv")
 test_labels = data['class.annot.test']
 test_labels.columns = ['label'] # Rename the column from '0' to 'label'
 # --------------------------------------------------------------------
@@ -123,8 +122,8 @@ def TrainOne(runID, paramCombo):
     #    Save confusion matrix, params, and training graphs to CSV  ----
     # ------------------------------------------------------------------
     pd.DataFrame(cm_df).to_csv(
-        f"/media/ethan/Data/Documents/UCO/Research/Grid Search Results/Brno_Classifiers_GS/id_{runID}_cm.csv", index=False)
+        f"src/results/classifier/ffnn/id_{runID}_cm.csv", index=False)
     pd.DataFrame(paramCombo).to_csv(
-        f"/media/ethan/Data/Documents/UCO/Research/Grid Search Results/Brno_Classifiers_GS/id_{runID}_params.csv", index=False)
+        f"src/results/classifier/ffnn/id_{runID}_params.csv", index=False)
     pd.DataFrame(history.history).to_csv(
-        f"/media/ethan/Data/Documents/UCO/Research/Grid Search Results/Brno_Classifiers_GS/id_{runID}_traingraph.csv", index=False)
+        f"src/results/classifier/ffnn/id_{runID}_traingraph.csv", index=False)
